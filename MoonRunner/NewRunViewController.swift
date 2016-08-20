@@ -89,7 +89,7 @@ class NewRunViewController: UIViewController {
   }
 
   func eachSecond(timer: NSTimer) {
-    seconds++
+    seconds = seconds + 1
     let secondsQuantity = HKQuantity(unit: HKUnit.secondUnit(), doubleValue: seconds)
     timeLabel.text = "Time: " + secondsQuantity.description
     let distanceQuantity = HKQuantity(unit: HKUnit.meterUnit(), doubleValue: distance)
