@@ -99,12 +99,14 @@ class NewRunViewController: UIViewController {
     let paceQuantity = HKQuantity(unit: paceUnit, doubleValue: seconds / distance)
     paceLabel.text = "Pace: " + paceQuantity.description
 
-    checkNextBadge()
+   checkNextBadge()
+   
     if let upcomingBadge = upcomingBadge {
       let nextBadgeDistanceQuantity = HKQuantity(unit: HKUnit.meterUnit(), doubleValue: upcomingBadge.distance! - distance)
       nextBadgeLabel.text = "\(nextBadgeDistanceQuantity.description) until \(upcomingBadge.name!)"
       nextBadgeImageView.image = UIImage(named: upcomingBadge.imageName!)
     }
+
   }
 
   func startLocationUpdates() {

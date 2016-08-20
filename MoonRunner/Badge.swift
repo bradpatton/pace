@@ -42,9 +42,9 @@ class Badge {
 class BadgeController {
   static let sharedController = BadgeController()
 
-  lazy var badges : [Badge] = {
+    lazy var badges : [Badge] = {
     var _badges = [Badge]()
-
+        do{
     let filePath = NSBundle.mainBundle().pathForResource("badges", ofType: "json") as String!
     let jsonData = NSData.dataWithContentsOfMappedFile(filePath) as! NSData
 
@@ -58,8 +58,7 @@ class BadgeController {
     else {
       print(error)
     }
-    
-
+        }catch{}
     return _badges
     }()
 

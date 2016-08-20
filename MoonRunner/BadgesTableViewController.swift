@@ -46,6 +46,7 @@ class BadgesTableViewController: UITableViewController {
 }
 
 // MARK: - UITableViewDataSource
+
 extension BadgesTableViewController {
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return badgeEarnStatusesArray.count
