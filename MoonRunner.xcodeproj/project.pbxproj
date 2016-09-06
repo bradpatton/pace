@@ -26,6 +26,7 @@
 		8739A7161A9B80B4001FE88E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8739A7131A9B8092001FE88E /* MapKit.framework */; };
 		874B42151A9C344500081A45 /* NewRunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874B42141A9C344500081A45 /* NewRunViewController.swift */; };
 		8772AB5B1A26347A00613309 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8772AB591A26347A00613309 /* HomeViewController.swift */; };
+		9DA75D641D7B3F51005DCE79 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA75D631D7B3F51005DCE79 /* HistoryTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		8739A7131A9B8092001FE88E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		874B42141A9C344500081A45 /* NewRunViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewRunViewController.swift; sourceTree = "<group>"; };
 		8772AB591A26347A00613309 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		9DA75D631D7B3F51005DCE79 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				78CE0D631AFBEA36009BBE75 /* Models */,
 				870F82621A24E70F00776E2F /* AppDelegate.swift */,
 				8772AB591A26347A00613309 /* HomeViewController.swift */,
+				9DA75D631D7B3F51005DCE79 /* HistoryTableViewController.swift */,
 				874B42141A9C344500081A45 /* NewRunViewController.swift */,
 				870F82691A24E70F00776E2F /* DetailViewController.swift */,
 				7892B4B21AFECC7E00195857 /* MulticolorPolylineSegment.swift */,
@@ -290,6 +293,7 @@
 				8772AB5B1A26347A00613309 /* HomeViewController.swift in Sources */,
 				788D55A41B0006E00071A31B /* BadgeCell.swift in Sources */,
 				788D55A61B00071B0071A31B /* BadgesTableViewController.swift in Sources */,
+				9DA75D641D7B3F51005DCE79 /* HistoryTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

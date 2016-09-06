@@ -1,31 +1,10 @@
-/*
-* Copyright (c) 2015 Razeware LLC
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-*/
-
 import UIKit
 import CoreData
 import CoreLocation
 import HealthKit
 import MapKit
 import AudioToolbox
+
 
 let DetailSegueName = "RunDetails"
 
@@ -113,7 +92,63 @@ class NewRunViewController: UIViewController {
     // Here, the location manager will be lazily instantiated
     locationManager.startUpdatingLocation()
   }
-
+    func takeSnapshot(mapView: MKMapView,imageName: String, withCallback: (UIImage?, NSError?) -> ()) {
+        let options = MKMapSnapshotOptions()
+        options.region = mapView.region
+        options.size = mapView.frame.size
+        options.scale = UIScreen.mainScreen().scale
+        
+        //let fileURL = NSURL(fileURLWithPath: "image.png")
+        
+        let snapshotter = MKMapSnapshotter(options: options)
+        snapshotter.startWithCompletionHandler { snapshot, error in
+            guard let snapshot = snapshot else {
+                print("Snapshot error: \(error)")
+                return
+            }
+            /*
+            let data = UIImagePNGRepresentation(snapshot.image)
+            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.PicturesDirectory, inDomains: .UserDomainMask)[0]
+            let fileURL = documentsURL.URLByAppendingPathComponent("image.png")
+            data?.writeToURL(fileURL, atomically: true)
+            print("Done  \(fileURL)")
+             */         let pin = MKPinAnnotationView(annotation: nil, reuseIdentifier: nil)
+            let image = snapshot.image
+            
+            UIGraphicsBeginImageContextWithOptions(image.size, true, image.scale)
+            image.drawAtPoint(CGPoint.zero)
+            
+            let visibleRect = CGRect(origin: CGPoint.zero, size: image.size)
+            for annotation in mapView.annotations {
+                var point = snapshot.pointForCoordinate(annotation.coordinate)
+                if visibleRect.contains(point) {
+                    point.x = point.x + pin.centerOffset.x - (pin.bounds.size.width / 2)
+                    point.y = point.y + pin.centerOffset.y - (pin.bounds.size.height / 2)
+                    pin.image?.drawAtPoint(point)
+                }
+            }
+            
+            let compositeImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            let data = UIImagePNGRepresentation(compositeImage)
+            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+            let fileURL = documentsURL.URLByAppendingPathComponent("image.png")
+            data?.writeToURL(fileURL, atomically: true)
+            print(fileURL)
+        }
+       /*
+        snapshotter.startWithQueue(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { snapshot, error in
+            guard let snapshot = snapshot else {
+                print("Snapshot error: \(error)")
+                fatalError()
+            }
+            
+            
+        }
+ */
+        
+    }
   func saveRun() {
     // 1
     let savedRun = NSEntityDescription.insertNewObjectForEntityForName("Run",
@@ -131,16 +166,20 @@ class NewRunViewController: UIViewController {
       savedLocation.latitude = location.coordinate.latitude
       savedLocation.longitude = location.coordinate.longitude
       savedLocations.append(savedLocation)
+      
     }
 
     savedRun.locations = NSOrderedSet(array: savedLocations)
     run = savedRun
-
-    // 3
+    takeSnapshot(mapView, imageName: String("image")){ (image, error) -> () in
+        guard image != nil else {
+            print(error)
+            return
+        }
     var error: NSError?
     let success: Bool
     do {
-      try managedObjectContext!.save()
+      try self.managedObjectContext!.save()
       success = true
     } catch let error1 as NSError {
       error = error1
@@ -149,9 +188,11 @@ class NewRunViewController: UIViewController {
     if !success {
       print("Could not save the run!")
     }
+    
   }
-
-  @IBAction func startPressed(sender: AnyObject) {
+    }
+    
+    @IBAction func startPressed(sender: AnyObject) {
     startButton.hidden = true
     promptLabel.hidden = true
 
@@ -204,6 +245,11 @@ class NewRunViewController: UIViewController {
       detailViewController.run = run
     }
   }
+    
+    
+    
+    
+    
 }
 
 // MARK: - MKMapViewDelegate
