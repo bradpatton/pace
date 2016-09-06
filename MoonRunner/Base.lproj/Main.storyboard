@@ -88,7 +88,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Gqp-Pd-8oE" secondAttribute="trailing" constant="20" id="wPY-gn-fuK"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Welcome to MoonRunner!" id="h86-gJ-Z9V"/>
+                    <navigationItem key="navigationItem" id="h86-gJ-Z9V"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QX7-5G-kpY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -235,11 +235,11 @@
         <scene sceneID="UjT-pe-OhJ">
             <objects>
                 <tableViewController id="WWe-w6-OYL" customClass="HistoryTableViewController" customModule="MoonRunner" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" id="sUA-VW-7ke">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" id="sUA-VW-7ke" propertyAccessControl="all">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="tN7-pN-qKw" userLabel="Run History">
+                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="tN7-pN-qKw" userLabel="Run History" propertyAccessControl="all">
                             <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </navigationBar>
