@@ -93,6 +93,8 @@ class NewRunViewController: UIViewController {
     locationManager.startUpdatingLocation()
   }
     func takeSnapshot(mapView: MKMapView,imageName: String, withCallback: (UIImage?, NSError?) -> ()) {
+        
+         /*
         let options = MKMapSnapshotOptions()
         options.region = mapView.region
         options.size = mapView.frame.size
@@ -137,7 +139,7 @@ class NewRunViewController: UIViewController {
             data?.writeToURL(fileURL, atomically: true)
             print(fileURL)
         }
-       /*
+      
         snapshotter.startWithQueue(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { snapshot, error in
             guard let snapshot = snapshot else {
                 print("Snapshot error: \(error)")

@@ -7,8 +7,56 @@
 //
 
 import UIKit
+import CoreData
 
 class HistoryTableViewController: UITableViewController {
+    
+    var runs = [NSManagedObject]()
+    
+   
+    
+   
+    @IBOutlet weak var navigationBar: UINavigationBar!
+    //@IBOutlet weak var navBar: UINavigationBar!
+  
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        print("viewwillload")
+        
+        
+        
+        let appDelegate =
+            UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext
+        
+        let fetchRequestRuns = NSFetchRequest(entityName: "Run")
+        
+        let sort = NSSortDescriptor(key: "timestamp", ascending: false)
+        
+        fetchRequestRuns.sortDescriptors = [sort]
+        
+        do {
+            let results =
+                try managedContext!.executeFetchRequest(fetchRequestRuns)
+            runs = results as! [NSManagedObject]
+            var totalTime: Int = 0
+            for i in runs {
+                let runTime = i.valueForKey("duration") as! Int
+                totalTime += runTime
+                let (h,m,s) = secondsToHoursMinutesSeconds(totalTime)
+                
+                let timeLabelText = String(format: "%02d", h) + " : " + String(format: "%02d", m) + " : " + String(format: "%02d", s)
+                
+               // navigationBar.topItem!.title = "Total :  \(timeLabelText)"
+            }
+            
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,23 +77,49 @@ class HistoryTableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return runs.count
     }
+    
+    
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+        
+        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+    
 
-    /*
+  
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
+        let cell = self.tableView.dequeueReusableCellWithIdentifier("CustomTableViewCell") as! CustomTableViewCell
+        let run = runs[indexPath.row]
+        
+        cell.paceLabel.text = "Pace"
+        
+        let formatter = NSDateFormatter()
+        formatter.dateStyle = NSDateFormatterStyle.ShortStyle
+        formatter.timeStyle = .ShortStyle
+        
+        if run.valueForKey("timestamp") != nil {
+            
+            let dateString = formatter.stringFromDate(run.valueForKey("timestamp") as! NSDate)
+            cell.dateLabel.text = dateString
+            
+        }
+        
+        let (h,m,s) = secondsToHoursMinutesSeconds(run.valueForKey("duration") as! Int)
+        
+        let timeLabelText = String(format: "%02d", h) + " : " + String(format: "%02d", m) + " : " + String(format: "%02d", s)
+        
+        
+        cell.timeLabel.text = timeLabelText
         return cell
+
     }
-    */
+   
 
     /*
     // Override to support conditional editing of the table view.
