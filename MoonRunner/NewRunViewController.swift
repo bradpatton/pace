@@ -71,11 +71,11 @@ class NewRunViewController: UIViewController {
     seconds = seconds + 1
     let secondsQuantity = HKQuantity(unit: HKUnit.secondUnit(), doubleValue: seconds)
     timeLabel.text = "Time: " + secondsQuantity.description
-    let distanceQuantity = HKQuantity(unit: HKUnit.meterUnit(), doubleValue: distance)
+    let distanceQuantity = HKQuantity(unit: HKUnit.mileUnit(), doubleValue: distance)
     distanceLabel.text = "Distance: " + distanceQuantity.description
 
-    let paceUnit = HKUnit.secondUnit().unitDividedByUnit(HKUnit.meterUnit())
-    let paceQuantity = HKQuantity(unit: paceUnit, doubleValue: seconds / distance)
+    let paceUnit = HKUnit.minuteUnit().unitDividedByUnit(HKUnit.mileUnit())
+    let paceQuantity = HKQuantity(unit: paceUnit, doubleValue: (seconds/60) / distance)
     paceLabel.text = "Pace: " + paceQuantity.description
 
    checkNextBadge()
