@@ -26,6 +26,75 @@ import CoreData
 class HomeViewController: UIViewController {
   var managedObjectContext: NSManagedObjectContext?
 
+    
+    let titles = ["Rain", "Fire", "Forest", "Ocean", "Silent"]
+    var time = [String]()
+    var scene = String()
+
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        timeArray(120)
+        
+        self.pickerView.delegate = self
+        self.pickerView.dataSource = self
+        
+        self.pickerView.font = UIFont(name: "HelveticaNeue-Light", size: 20)!
+        self.pickerView.highlightedFont = UIFont(name: "HelveticaNeue-Light", size: 20)!
+        self.pickerView.pickerViewStyle = .Wheel
+        self.pickerView.maskDisabled = false
+        
+        self.pickerView.reloadData()
+        self.pickerView.selectItem(2, animated: false)
+        
+        self.timePickerView.delegate = self
+        self.timePickerView.dataSource = self
+        
+        self.timePickerView.font = UIFont(name: "HelveticaNeue-Light", size: 20)!
+        self.timePickerView.highlightedFont = UIFont(name: "HelveticaNeue-Light", size: 20)!
+        self.timePickerView.pickerViewStyle = .Wheel
+        self.timePickerView.maskDisabled = false
+        
+        self.timePickerView.reloadData()
+        self.timePickerView.selectItem(2, animated: false)
+        
+    }
+
+    
+    func numberOfItemsInPickerView(pickerView: AKPickerView) -> Int {
+        
+        if(pickerView.tag == 2){
+            return self.titles.count
+        }else{
+            return self.time.count
+        }
+    }
+    
+    func pickerView(pickerView: AKPickerView, titleForItem item: Int) -> String {
+        
+        if(pickerView.tag == 2){
+            
+            scene = self.titles[item]
+            return self.titles[item]
+            
+        }else {
+            
+            self.totalSeconds = itemToSeconds(self.time[item])
+            return self.time[item]
+            
+        }
+    }
+    
+    func timeArray(numberOfMinutes: Int) {
+        
+        for var index = 5;index < numberOfMinutes+1; index = index + 5 {
+            
+            time.append(String(index) + " min")
+            
+        }
+    }
+
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.destinationViewController.isKindOfClass(NewRunViewController) {
       if let newRunViewController = segue.destinationViewController as? NewRunViewController {
