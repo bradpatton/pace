@@ -46,7 +46,7 @@ class HistoryTableViewController: UITableViewController {
                 totalTime += runTime
                 let (h,m,s) = secondsToHoursMinutesSeconds(totalTime)
                 
-                let timeLabelText = String(format: "%02d", h) + " : " + String(format: "%02d", m) + " : " + String(format: "%02d", s)
+                //let timeLabelText = String(format: "%02d", h) + " : " + String(format: "%02d", m) + " : " + String(format: "%02d", s)
                 
                // navigationBar.topItem!.title = "Total :  \(timeLabelText)"
             }
