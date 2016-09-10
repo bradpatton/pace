@@ -8,11 +8,12 @@ import AudioToolbox
 
 let DetailSegueName = "RunDetails"
 
-class NewRunViewController: UIViewController {
+class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerViewDelegate  {
   var managedObjectContext: NSManagedObjectContext?
 
   var run: Run!
 
+  @IBOutlet weak var pacePickerView: AKPickerView!
   var upcomingBadge : Badge?
   @IBOutlet weak var nextBadgeLabel: UILabel!
   @IBOutlet weak var nextBadgeImageView: UIImageView!
@@ -42,6 +43,74 @@ class NewRunViewController: UIViewController {
 
   lazy var locations = [CLLocation]()
   lazy var timer = NSTimer()
+
+    let titles = ["Rain", "Fire", "Forest", "Ocean", "Silent"]
+    var time = [String]()
+    var scene = String()
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        timeArray(120)
+        /*
+         self.heartratePickerView.delegate = self
+         self.heartratePickerView.dataSource = self
+         
+         self.heartratePickerView.font = UIFont(name: "HelveticaNeue-Light", size: 20)!
+         self.heartratePickerView.highlightedFont = UIFont(name: "HelveticaNeue-Light", size: 20)!
+         self.heartratePickerView.pickerViewStyle = .Wheel
+         self.heartratePickerView.maskDisabled = false
+         
+         self.heartratePickerView.reloadData()
+         self.heartratePickerView.selectItem(2, animated: false)
+         */
+         self.pacePickerView.delegate = self
+         self.pacePickerView.dataSource = self
+         
+         self.pacePickerView.font = UIFont(name: "HelveticaNeue-Light", size: 20)!
+         self.pacePickerView.highlightedFont = UIFont(name: "HelveticaNeue-Light", size: 20)!
+         self.pacePickerView.pickerViewStyle = .Wheel
+         self.pacePickerView.maskDisabled = false
+         
+         self.pacePickerView.reloadData()
+         self.pacePickerView.selectItem(2, animated: false)
+        
+    }
+    
+    
+    func numberOfItemsInPickerView(pickerView: AKPickerView) -> Int {
+        
+        if(pickerView.tag == 2){
+            return self.titles.count
+        }else{
+            return self.time.count
+        }
+    }
+    
+    func pickerView(pickerView: AKPickerView, titleForItem item: Int) -> String {
+        
+        if(pickerView.tag == 2){
+            
+            scene = self.titles[item]
+            return self.titles[item]
+            
+        }else {
+            
+            // self.totalSeconds = itemToSeconds(self.time[item])
+            return self.time[item]
+            
+        }
+    }
+    
+    func timeArray(numberOfMinutes: Int) {
+        
+        for var index = 5;index < numberOfMinutes+1; index = index + 5 {
+            
+            time.append(String(index) + " min")
+            
+        }
+    }
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
