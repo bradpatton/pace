@@ -13,7 +13,9 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
 
   var run: Run!
 
-  @IBOutlet weak var pacePickerView: AKPickerView!
+@IBOutlet weak var heartratePickerView: AKPickerView!
+ 
+@IBOutlet weak var pacePickerView: AKPickerView!
   var upcomingBadge : Badge?
   @IBOutlet weak var nextBadgeLabel: UILabel!
   @IBOutlet weak var nextBadgeImageView: UIImageView!
@@ -44,16 +46,18 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
   lazy var locations = [CLLocation]()
   lazy var timer = NSTimer()
 
-    let titles = ["Rain", "Fire", "Forest", "Ocean", "Silent"]
-    var time = [String]()
-    var scene = String()
+    
+    var pace = [String]()
+    var heartrate = [String]()
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        timeArray(120)
-        /*
+        
+        heartrateArray(190)
+        paceArray(30)
+        
          self.heartratePickerView.delegate = self
          self.heartratePickerView.dataSource = self
          
@@ -64,7 +68,7 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
          
          self.heartratePickerView.reloadData()
          self.heartratePickerView.selectItem(2, animated: false)
-         */
+    
          self.pacePickerView.delegate = self
          self.pacePickerView.dataSource = self
          
@@ -74,7 +78,7 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
          self.pacePickerView.maskDisabled = false
          
          self.pacePickerView.reloadData()
-         self.pacePickerView.selectItem(2, animated: false)
+         self.pacePickerView.selectItem(7, animated: false)
         
     }
     
@@ -82,9 +86,10 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
     func numberOfItemsInPickerView(pickerView: AKPickerView) -> Int {
         
         if(pickerView.tag == 2){
-            return self.titles.count
+            return self.pace.count
         }else{
-            return self.time.count
+           
+            return self.heartrate.count
         }
     }
     
@@ -92,25 +97,33 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
         
         if(pickerView.tag == 2){
             
-            scene = self.titles[item]
-            return self.titles[item]
+            return self.pace[item]
             
         }else {
             
             // self.totalSeconds = itemToSeconds(self.time[item])
-            return self.time[item]
+            return self.heartrate[item]
             
         }
     }
     
-    func timeArray(numberOfMinutes: Int) {
+    func paceArray(numberOfMinutes: Int) {
         
-        for var index = 5;index < numberOfMinutes+1; index = index + 5 {
+        for var index = 4;index < numberOfMinutes+1; index = index + 1 {
             
-            time.append(String(index) + " min")
+            pace.append(String(index) + " min")
             
         }
     }
+    func heartrateArray(numberOfMinutes: Int) {
+        
+        for var index = 5;index < numberOfMinutes+1; index = index + 5 {
+            
+            heartrate.append(String(index) + " BPM")
+            
+        }
+    }
+
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
@@ -266,7 +279,8 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
     @IBAction func startPressed(sender: AnyObject) {
     startButton.hidden = true
     promptLabel.hidden = true
-
+    pacePickerView.hidden = true
+        heartratePickerView.hidden = true
     timeLabel.hidden = false
     distanceLabel.hidden = false
     paceLabel.hidden = false
