@@ -130,6 +130,8 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
 
     startButton.hidden = false
     promptLabel.hidden = false
+    pacePickerView.hidden = false
+    heartratePickerView.hidden = false
 
     timeLabel.hidden = true
     distanceLabel.hidden = true
@@ -154,11 +156,12 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
     let secondsQuantity = HKQuantity(unit: HKUnit.secondUnit(), doubleValue: seconds)
     timeLabel.text = "Time: " + secondsQuantity.description
     let distanceQuantity = HKQuantity(unit: HKUnit.mileUnit(), doubleValue: distance)
-    distanceLabel.text = "Distance: " + distanceQuantity.description
+    distanceLabel.text = "Distance: " + String(round(100*distance)/100)
 
     let paceUnit = HKUnit.minuteUnit().unitDividedByUnit(HKUnit.mileUnit())
     let paceQuantity = HKQuantity(unit: paceUnit, doubleValue: (seconds/60) / distance)
-    paceLabel.text = "Pace: " + paceQuantity.description
+    paceLabel.text = "Pace: " + String(round(10*paceQuantity.doubleValueForUnit(paceUnit))/10)
+
 
    checkNextBadge()
    
@@ -361,7 +364,7 @@ extension NewRunViewController: CLLocationManagerDelegate {
       if abs(howRecent) < 10 && location.horizontalAccuracy < 20 {
         //update distance
         if self.locations.count > 0 {
-          distance += location.distanceFromLocation(self.locations.last!)
+          distance += (location.distanceFromLocation(self.locations.last!))*0.000621371
 
           var coords = [CLLocationCoordinate2D]()
           coords.append(self.locations.last!.coordinate)
