@@ -97,21 +97,26 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
         
         if(pickerView.tag == 2){
             
-            return self.pace[item]
+            return self.pace[item] + " mi/min"
             
         }else {
             
             // self.totalSeconds = itemToSeconds(self.time[item])
-            return self.heartrate[item]
+            return self.heartrate[item] + " bpm"
             
         }
+    }
+    
+    func pickerView(pickerView: AKPickerView, didSelectItem item: Int) {
+        print("Your favorite city is \(self.pace[item])")
+        print("Your favorite city is \(self.heartrate[item])")
     }
     
     func paceArray(numberOfMinutes: Int) {
         
         for var index = 4;index < numberOfMinutes+1; index = index + 1 {
             
-            pace.append(String(index) + " min")
+            pace.append(String(index))
             
         }
     }
@@ -119,7 +124,7 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
         
         for var index = 5;index < numberOfMinutes+1; index = index + 5 {
             
-            heartrate.append(String(index) + " BPM")
+            heartrate.append(String(index))
             
         }
     }
