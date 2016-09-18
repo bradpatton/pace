@@ -16,6 +16,7 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
 @IBOutlet weak var heartratePickerView: AKPickerView!
  
 @IBOutlet weak var pacePickerView: AKPickerView!
+    
   var upcomingBadge : Badge?
   @IBOutlet weak var nextBadgeLabel: UILabel!
   @IBOutlet weak var nextBadgeImageView: UIImageView!
@@ -31,6 +32,8 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
 
   var seconds = 0.0
   var distance = 0.0
+  var paceSpeed = 0.0
+    var hRate = 0
 
   lazy var locationManager: CLLocationManager = {
     var _locationManager = CLLocationManager()
@@ -108,8 +111,10 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
     }
     
     func pickerView(pickerView: AKPickerView, didSelectItem item: Int) {
-        print("Your favorite city is \(self.pace[item])")
-        print("Your favorite city is \(self.heartrate[item])")
+        
+        paceSpeed = Double(self.pace[item])!
+        hRate = Int(self.heartrate[item])!
+        print(String(paceSpeed))
     }
     
     func paceArray(numberOfMinutes: Int) {
@@ -131,6 +136,7 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
 
 
   override func viewWillAppear(animated: Bool) {
+    
     super.viewWillAppear(animated)
 
     startButton.hidden = false
@@ -149,31 +155,44 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
 
     nextBadgeLabel.hidden = true
     nextBadgeImageView.hidden = true
+    
   }
 
   override func viewWillDisappear(animated: Bool) {
+    
     super.viewWillDisappear(animated)
     timer.invalidate()
+    
   }
 
   func eachSecond(timer: NSTimer) {
+    
     seconds = seconds + 1
     let secondsQuantity = HKQuantity(unit: HKUnit.secondUnit(), doubleValue: seconds)
     timeLabel.text = "Time: " + secondsQuantity.description
-    let distanceQuantity = HKQuantity(unit: HKUnit.mileUnit(), doubleValue: distance)
-    distanceLabel.text = "Distance: " + String(round(100*distance)/100)
+    let distanceQuantity = HKQuantity(unit: HKUnit.mileUnit(), doubleValue: round(100*distance)/100)
+    distanceLabel.text = "Distance: " + String(distanceQuantity)
 
     let paceUnit = HKUnit.minuteUnit().unitDividedByUnit(HKUnit.mileUnit())
     let paceQuantity = HKQuantity(unit: paceUnit, doubleValue: (seconds/60) / distance)
-    paceLabel.text = "Pace: " + String(round(10*paceQuantity.doubleValueForUnit(paceUnit))/10)
-
-
+    let cPace = round(10*paceQuantity.doubleValueForUnit(paceUnit))/10
+    paceLabel.text = "Pace: " + String(cPace) + " min/mi"
+    
+    if (paceSpeed - 0.5) > cPace   {
+        playSuccessSound(1)
+    }else if (paceSpeed + 0.5) < cPace{
+        playSuccessSound(0)
+    }
+    
    checkNextBadge()
    
+
     if let upcomingBadge = upcomingBadge {
+        
       let nextBadgeDistanceQuantity = HKQuantity(unit: HKUnit.meterUnit(), doubleValue: upcomingBadge.distance! - distance)
       nextBadgeLabel.text = "\(nextBadgeDistanceQuantity.description) until \(upcomingBadge.name!)"
       nextBadgeImageView.image = UIImage(named: upcomingBadge.imageName!)
+        
     }
 
   }
@@ -182,65 +201,8 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
     // Here, the location manager will be lazily instantiated
     locationManager.startUpdatingLocation()
   }
-    func takeSnapshot(mapView: MKMapView,imageName: String, withCallback: (UIImage?, NSError?) -> ()) {
-        
-         /*
-        let options = MKMapSnapshotOptions()
-        options.region = mapView.region
-        options.size = mapView.frame.size
-        options.scale = UIScreen.mainScreen().scale
-        
-        //let fileURL = NSURL(fileURLWithPath: "image.png")
-        
-        let snapshotter = MKMapSnapshotter(options: options)
-        snapshotter.startWithCompletionHandler { snapshot, error in
-            guard let snapshot = snapshot else {
-                print("Snapshot error: \(error)")
-                return
-            }
-            /*
-            let data = UIImagePNGRepresentation(snapshot.image)
-            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.PicturesDirectory, inDomains: .UserDomainMask)[0]
-            let fileURL = documentsURL.URLByAppendingPathComponent("image.png")
-            data?.writeToURL(fileURL, atomically: true)
-            print("Done  \(fileURL)")
-             */         let pin = MKPinAnnotationView(annotation: nil, reuseIdentifier: nil)
-            let image = snapshot.image
-            
-            UIGraphicsBeginImageContextWithOptions(image.size, true, image.scale)
-            image.drawAtPoint(CGPoint.zero)
-            
-            let visibleRect = CGRect(origin: CGPoint.zero, size: image.size)
-            for annotation in mapView.annotations {
-                var point = snapshot.pointForCoordinate(annotation.coordinate)
-                if visibleRect.contains(point) {
-                    point.x = point.x + pin.centerOffset.x - (pin.bounds.size.width / 2)
-                    point.y = point.y + pin.centerOffset.y - (pin.bounds.size.height / 2)
-                    pin.image?.drawAtPoint(point)
-                }
-            }
-            
-            let compositeImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            let data = UIImagePNGRepresentation(compositeImage)
-            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-            let fileURL = documentsURL.URLByAppendingPathComponent("image.png")
-            data?.writeToURL(fileURL, atomically: true)
-            print(fileURL)
-        }
-      
-        snapshotter.startWithQueue(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { snapshot, error in
-            guard let snapshot = snapshot else {
-                print("Snapshot error: \(error)")
-                fatalError()
-            }
-            
-            
-        }
- */
-        
-    }
+    
+    
   func saveRun() {
     // 1
     let savedRun = NSEntityDescription.insertNewObjectForEntityForName("Run",
@@ -263,25 +225,8 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
 
     savedRun.locations = NSOrderedSet(array: savedLocations)
     run = savedRun
-    takeSnapshot(mapView, imageName: String("image")){ (image, error) -> () in
-        guard image != nil else {
-            print(error)
-            return
-        }
-    var error: NSError?
-    let success: Bool
-    do {
-      try self.managedObjectContext!.save()
-      success = true
-    } catch let error1 as NSError {
-      error = error1
-      success = false
-    }
-    if !success {
-      print("Could not save the run!")
-    }
     
-  }
+    
     }
     
     @IBAction func startPressed(sender: AnyObject) {
@@ -311,8 +256,15 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
     actionSheet.showInView(view)
   }
 
-  func playSuccessSound() {
-    let soundURL = NSBundle.mainBundle().URLForResource("success", withExtension: "wav")
+    func playSuccessSound(sound: Int) {
+        var soundURL: NSURL!
+    if sound == 0 {
+        soundURL = NSBundle.mainBundle().URLForResource("success", withExtension: "wav")
+    }else if sound == 1 {
+        soundURL = NSBundle.mainBundle().URLForResource("fast", withExtension: "wav")
+    }else{
+        soundURL = NSBundle.mainBundle().URLForResource("fast", withExtension: "wav")
+        }
     var soundID : SystemSoundID = 0
     AudioServicesCreateSystemSoundID(soundURL!, &soundID)
     AudioServicesPlaySystemSound(soundID)
@@ -326,7 +278,7 @@ class NewRunViewController: UIViewController, AKPickerViewDataSource, AKPickerVi
 
     if let upcomingBadge = upcomingBadge {
       if upcomingBadge.name! != nextBadge.name! {
-        playSuccessSound()
+        playSuccessSound(0)
       }
     }
     

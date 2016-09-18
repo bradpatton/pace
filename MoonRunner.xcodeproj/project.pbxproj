@@ -27,6 +27,7 @@
 		874B42151A9C344500081A45 /* NewRunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874B42141A9C344500081A45 /* NewRunViewController.swift */; };
 		8772AB5B1A26347A00613309 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8772AB591A26347A00613309 /* HomeViewController.swift */; };
 		9D4C33D81D824A9700AADA99 /* AKPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4C33D71D824A9700AADA99 /* AKPickerView.swift */; };
+		9D4C33DA1D8DAAE500AADA99 /* fast.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9D4C33D91D8DAAE500AADA99 /* fast.wav */; };
 		9DA75D641D7B3F51005DCE79 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA75D631D7B3F51005DCE79 /* HistoryTableViewController.swift */; };
 		9DA75D661D7E5DD2005DCE79 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA75D651D7E5DD2005DCE79 /* CustomTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -66,6 +67,7 @@
 		874B42141A9C344500081A45 /* NewRunViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewRunViewController.swift; sourceTree = "<group>"; };
 		8772AB591A26347A00613309 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9D4C33D71D824A9700AADA99 /* AKPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AKPickerView.swift; sourceTree = "<group>"; };
+		9D4C33D91D8DAAE500AADA99 /* fast.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fast.wav; sourceTree = "<group>"; };
 		9DA75D631D7B3F51005DCE79 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
 		9DA75D651D7E5DD2005DCE79 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				872189291AA2A46100C63008 /* success.wav */,
+				9D4C33D91D8DAAE500AADA99 /* fast.wav */,
 				872189271AA2A43E00C63008 /* badges.json */,
 				870F82611A24E70F00776E2F /* Info.plist */,
 			);
@@ -265,6 +268,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D4C33DA1D8DAAE500AADA99 /* fast.wav in Resources */,
 				8721892A1AA2A46100C63008 /* success.wav in Resources */,
 				870F826D1A24E70F00776E2F /* Main.storyboard in Resources */,
 				872189281AA2A43E00C63008 /* badges.json in Resources */,
